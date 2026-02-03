@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Maroc",
-      "photo": "",
+      "photo": "/images/maroc.webp",
       "group": "A",
       "matchs": [
         {
@@ -23,7 +23,7 @@
     {
       "id": 2,
       "name": "Senegale",
-      "photo": "",
+      "photo": "/images/senigale.jpeg",
       "group": "A",
       "matchs": [
         {
@@ -43,7 +43,7 @@
     {
       "id": 3,
       "name": "France",
-      "photo": "",
+      "photo": "/images/egypt.jpg",
       "group": "B",
       "matchs": [
         {

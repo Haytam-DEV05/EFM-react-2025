@@ -14,7 +14,7 @@ export default function Menu() {
       element: <Layout />,
       children: [
         { index: true, element: <ListeDesEquipes /> },
-        { path: "matchs", element: <ListeDesMatchs /> },
+        { path: "matchs/:id", element: <ListeDesMatchs /> },
       ],
     },
   ]);
