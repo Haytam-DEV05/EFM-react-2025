@@ -1,106 +1,67 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setMatchs,
+  likeMatch,
+  deslikeMatch,
+} from "../Features/Slice/SliceMatchs";
 
 export default function ListeDesMatchs() {
   const { id } = useParams();
-  const [equipe, setEquipe] = useState([]);
+  const dispatch = useDispatch();
   const [nomEquipe, setNomEquipe] = useState("");
+
+  const matchs = useSelector((state) => state.matchs.matchs);
+
   useEffect(() => {
     fetch(`http://localhost:2005/Equipes?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
-        const result = data[0].matchs.map((match) => {
-          return { ...match, like: 0, deslike: 0 };
-        });
-        setEquipe(result);
-        setNomEquipe(data.map((ele) => ele.name));
+        setNomEquipe(data[0].name);
+        const result = data[0].matchs.map((m) => ({
+          ...m,
+          like: 0,
+          deslike: 0,
+        }));
+        dispatch(setMatchs(result));
       });
-  }, [id]);
-
-  const handleBtnLike = (param) => {
-    setEquipe(
-      equipe.map((e) => {
-        if (e.id == param) {
-          return { ...e, like: (e.like += 1) };
-        } else {
-          return e;
-        }
-      }),
-    );
-  };
-
-  const handleBtnDesLike = (param) => {
-    setEquipe(
-      equipe.map((e) => {
-        if (e.id == param) {
-          return { ...e, deslike: (e.deslike += 1) };
-        } else {
-          return e;
-        }
-      }),
-    );
-  };
+  }, [id, dispatch]);
 
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>
-        ListeDesMatchs De L'equipe : Maroc
+        ListeDesMatchs De L'equipe {nomEquipe}
       </h1>
-      <div
-        className="matchs-equipes"
-        style={{ maxWidth: "400px", marginInline: "auto" }}
-      >
-        {equipe.map((ele, index) => {
-          return (
-            <div
-              key={index}
-              style={{
-                border: "2px solid black",
-                padding: "10px",
-                marginBlock: "10px",
-              }}
-            >
-              <div
-                className="info"
-                style={{ textAlign: "center", borderBottom: "2px solid black" }}
-              >
-                <h2>
-                  {nomEquipe}{" "}
-                  <span style={{ fontSize: "40px", fontWeight: "900" }}>
-                    VS
-                  </span>
-                  {ele.contre}
-                </h2>
-                <span>{ele.date}</span>
-              </div>
-              <div
-                className="buttons"
-                style={{
-                  maxWidth: "fit-content",
-                  marginInline: "auto",
-                  marginTop: "10px",
-                }}
-              >
-                <button
-                  style={{
-                    marginInline: "5px",
-                  }}
-                  onClick={() => handleBtnLike(ele.id)}
-                >
-                  Like <span>{ele.like}</span>
-                </button>
-                <button
-                  style={{
-                    marginInline: "5px",
-                  }}
-                  onClick={() => handleBtnDesLike(ele.id)}
-                >
-                  Deslike <span>{ele.deslike}</span>
-                </button>
-              </div>
+
+      <div style={{ maxWidth: "400px", marginInline: "auto" }}>
+        {matchs.map((ele) => (
+          <div
+            key={ele.id}
+            style={{
+              border: "2px solid black",
+              padding: "10px",
+              marginBlock: "10px",
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <h2>
+                {nomEquipe} VS {ele.contre}
+              </h2>
+              <span>{ele.date}</span>
             </div>
-          );
-        })}
+
+            <div style={{ textAlign: "center", marginTop: "10px" }}>
+              <button onClick={() => dispatch(likeMatch(ele.id))}>
+                Like {ele.like}
+              </button>
+
+              <button onClick={() => dispatch(deslikeMatch(ele.id))}>
+                Deslike {ele.deslike}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

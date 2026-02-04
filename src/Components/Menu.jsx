@@ -34,7 +34,7 @@ export default function Menu() {
           <NavLink style={{ marginInline: "10px" }} to="/">
             Les Equipes
           </NavLink>
-          <NavLink style={{ marginInline: "10px" }} to="/matchs">
+          <NavLink style={{ marginInline: "10px" }} to="/">
             Les Matchs
           </NavLink>
         </nav>
