@@ -5,17 +5,42 @@ export default function ListeDesMatchs() {
   const { id } = useParams();
   const [equipe, setEquipe] = useState([]);
   const [nomEquipe, setNomEquipe] = useState("");
-
   useEffect(() => {
     fetch(`http://localhost:2005/Equipes?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
-        const foundMatchs = data.map((ele) => ele.matchs);
-        // console.log(...foundMatchs);
-        setEquipe(...foundMatchs);
+        const result = data[0].matchs.map((match) => {
+          return { ...match, like: 0, deslike: 0 };
+        });
+        setEquipe(result);
         setNomEquipe(data.map((ele) => ele.name));
       });
   }, [id]);
+
+  const handleBtnLike = (param) => {
+    setEquipe(
+      equipe.map((e) => {
+        if (e.id == param) {
+          return { ...e, like: (e.like += 1) };
+        } else {
+          return e;
+        }
+      }),
+    );
+  };
+
+  const handleBtnDesLike = (param) => {
+    setEquipe(
+      equipe.map((e) => {
+        if (e.id == param) {
+          return { ...e, deslike: (e.deslike += 1) };
+        } else {
+          return e;
+        }
+      }),
+    );
+  };
+
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>
@@ -56,8 +81,22 @@ export default function ListeDesMatchs() {
                   marginTop: "10px",
                 }}
               >
-                <button style={{ marginInline: "5px" }}>Like</button>
-                <button style={{ marginInline: "5px" }}>Deslike</button>
+                <button
+                  style={{
+                    marginInline: "5px",
+                  }}
+                  onClick={() => handleBtnLike(ele.id)}
+                >
+                  Like <span>{ele.like}</span>
+                </button>
+                <button
+                  style={{
+                    marginInline: "5px",
+                  }}
+                  onClick={() => handleBtnDesLike(ele.id)}
+                >
+                  Deslike <span>{ele.deslike}</span>
+                </button>
               </div>
             </div>
           );
