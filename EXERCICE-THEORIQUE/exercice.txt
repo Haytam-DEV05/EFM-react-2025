@@ -1,0 +1,21 @@
+========================================
+======== EXERCICE THEORIQUE ============
+========================================
+
+1 => componentDidMount()
+
+2 => la methode map()
+
+3 => <User nome="ali" />
+
+4 => 
+    <div align="center">
+        <h1>DEVWOFS</h1>
+    <div/>
+
+5 => useEffect : raect hook permet de executer le code apre le rendu 
+                du composant , il est utilise pour gerer les effet secondaire
+                + example => 
+                    + API
+                    + manipulation DOM
+                    + timers(setTimeout, setInterval)
